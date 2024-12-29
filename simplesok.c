@@ -385,7 +385,7 @@ static int displaytexture(SDL_Renderer *renderer, SDL_Texture *texture, SDL_Wind
   int winw, winh;
   SDL_Rect rect, *rectptr;
   SDL_QueryTexture(texture, NULL, NULL, &rect.w, &rect.h);
-  SDL_GetWindowSize(window, &winw, &winh);
+  SDL_GL_GetDrawableSize(window, &winw, &winh);
   if (flags & DISPLAYCENTERED) {
     rectptr = &rect;
     rect.x = (winw - rect.w) / 2;
@@ -474,7 +474,7 @@ static void draw_string(const char *orgstring, int fontsize, unsigned char alpha
   int multilineid = 0;
   if (maxlines > 16) maxlines = 16;
   /* get size of the window */
-  SDL_GetWindowSize(window, &winw, &winh);
+  SDL_GL_GetDrawableSize(window, &winw, &winh);
   wordwrap(orgstring, multiline, maxlines, winw - x, fontsize, sprites);
   /* loop on every line */
   for (multilineid = 0; (multilineid < maxlines) && (multiline[multilineid] != NULL); multilineid += 1) {
@@ -708,7 +708,7 @@ static void draw_screen(const struct sokgame *game, const struct sokgamestates *
   int scrollingadjx = 0, scrollingadjy = 0; /* this is used when scrolling + movement of player is needed */
   int drawtile_flags = 0;
 
-  SDL_GetWindowSize(window, &winw, &winh);
+  SDL_GL_GetDrawableSize(window, &winw, &winh);
   SDL_RenderClear(renderer);
 
   if ((flags & DRAWSCREEN_NOBG) == 0) {
@@ -852,7 +852,7 @@ static int rotatePlayer(struct spritesstruct *sprites, const struct sokgame *gam
 
 static int scrollneeded(struct sokgame *game, SDL_Window *window, unsigned short tilesize, int offx, int offy) {
   int winw, winh, offsetx, offsety, result = 0;
-  SDL_GetWindowSize(window, &winw, &winh);
+  SDL_GL_GetDrawableSize(window, &winw, &winh);
   offsetx = absval(getoffseth(game, winw, tilesize));
   offsety = absval(getoffsetv(game, winh, tilesize));
   game->positionx += offx;
@@ -914,7 +914,7 @@ static int menu(SDL_Renderer *renderer, struct spritesstruct *sprites, SDL_Windo
     if (step == 0) step = 1;
 
     /* get window's width and height */
-    SDL_GetWindowSize(window, &winw, &winh);
+    SDL_GL_GetDrawableSize(window, &winw, &winh);
 
     /* precompute the y-axis position of every line */
     RECOMPUTE_POSITIONS:
@@ -1189,7 +1189,7 @@ static int selectlevel(struct sokgame **gameslist, struct spritesstruct *sprites
 
   /* loop */
   for (;;) {
-    SDL_GetWindowSize(window, &winw, &winh);
+    SDL_GL_GetDrawableSize(window, &winw, &winh);
 
     /* draw the screen
      * when drawing levelmaps make sure that the tilesize is an even number,
@@ -1447,7 +1447,7 @@ static int selectinternetlevel(SDL_Renderer *renderer, SDL_Window *window, struc
   for (;;) {
     SDL_Rect rect;
     /* compute the amount of rows we can fit onscreen */
-    SDL_GetWindowSize(window, &winw, &winh);
+    SDL_GL_GetDrawableSize(window, &winw, &winh);
     windowrows = (winh / fontheight) - 7;
     /* display the list of levels */
     SDL_RenderClear(renderer);
@@ -1698,7 +1698,7 @@ int main(int argc, char **argv) {
   window = SDL_CreateWindow("Simple Sokoban " PACKAGE_VERSION,
                             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                             SCREEN_DEFAULT_WIDTH, SCREEN_DEFAULT_HEIGHT,
-                            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+                            SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
   if (window == NULL) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return(1);
@@ -1713,7 +1713,9 @@ int main(int argc, char **argv) {
     return(1);
   }
 
-  SDL_SetWindowMinimumSize(window, 600, 400);
+  //SDL_RenderSetLogicalSize(renderer, SCREEN_DEFAULT_WIDTH, SCREEN_DEFAULT_HEIGHT);
+
+  //SDL_SetWindowMinimumSize(window, 600, 400);
 
   LoadSprites:
 
