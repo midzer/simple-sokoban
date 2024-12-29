@@ -29,7 +29,7 @@ AM_INIT_AUTOMAKE([dist-xz])
 
 AC_CONFIG_HEADERS([config.h])
 
-: ${CFLAGS=""}		# Do not use autotools default.
+: ${CFLAGS="-O3 -flto -fno-rtti -fno-exceptions"}		# Do not use autotools default.
 AC_PROG_CC
 
 AC_CHECK_HEADERS([dirent.h errno.h stddef.h stdio.h stdlib.h string.h])
@@ -106,15 +106,15 @@ dnl ----------------------------------------------------------------------------
 dnl				zlib configuration
 dnl ----------------------------------------------------------------------------
 
-PKG_CHECK_MODULES(ZLIB, [zlib],,
-		  AC_MSG_ERROR([zlib development files not found]))
+#PKG_CHECK_MODULES(ZLIB, [zlib],,
+#		  AC_MSG_ERROR([zlib development files not found]))
 
 dnl ----------------------------------------------------------------------------
 dnl				SDL2 configuration
 dnl ----------------------------------------------------------------------------
 
-PKG_CHECK_MODULES(SDL2, [sdl2 SDL2_image],,
-		  AC_MSG_ERROR([SDL2 development files not found]))
+#PKG_CHECK_MODULES(SDL2, [sdl2 SDL2_image],,
+#		  AC_MSG_ERROR([SDL2 development files not found]))
 SDL_RENDERER_FLAGS=0
 AC_ARG_WITH(software-renderer,
 	    AS_HELP_STRING([--with-software-renderer],
@@ -137,7 +137,7 @@ dnl				libcurl configuration
 dnl ----------------------------------------------------------------------------
 
 has_libcurl=
-PKG_CHECK_MODULES(LIBCURL, [libcurl], [has_libcurl=yes])
+#PKG_CHECK_MODULES(LIBCURL, [libcurl], [has_libcurl=yes])
 AC_ARG_ENABLE(libcurl, AS_HELP_STRING([--disable-libcurl],
 				      [Don't use libcurl for internet access]),,
 	      enable_libcurl="${has_libcurl}")

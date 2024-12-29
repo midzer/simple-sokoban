@@ -1,0 +1,16 @@
+[
+    "main",
+    "menu",
+    "draw_screen",
+    "selectlevel",
+    "wait_for_a_key",
+    "selectskinmenu",
+    "fade2texture",
+    "displaytexture",
+    "SDL_Delay",
+    "SDL_RenderPresent",
+    "SDL_WaitEventTimeout",
+    "GLES2_RenderPresent",
+    "Emscripten_GLES_SwapWindow",
+    "dynCall_v"
+]
